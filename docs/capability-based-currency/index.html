@@ -1,0 +1,397 @@
+# Capability Money Specification
+
+## Status
+
+Draft
+
+## Purpose
+
+This specification defines a fixed-supply, indivisible, capability-based money system.
+
+Each coin is a single indivisible unit, comparable to one cent. A coin is controlled by a single spend authority at a time. Coins are either currently controlled by some holder or not currently controlled by anyone.
+
+The system is designed so that:
+
+* supply is fixed per context
+* coins are indivisible
+* ownership is capability-based
+* inactive claimed coins eventually return to circulation
+* early distribution can begin through strongly rate-limited free claiming
+* later circulation is primarily driven by spending
+
+## Core Model
+
+A coin is not an account balance entry. A coin is a discrete network object with a unique identifier.
+
+A holder does not own a coin by name or account membership. A holder controls a coin by possessing the private key corresponding to the coin’s current controlling public key.
+
+A payment transfers control of one or more coins from the payer’s keys to public keys supplied by the payee.
+
+## Design Principles
+
+1. Minimal state model
+2. Fixed supply
+3. Indivisible units
+4. Capability-based control
+5. Domain-agnostic participation
+6. Circulation over passive hoarding
+7. No permanent ownership without continued participation
+
+## States
+
+A coin has exactly two states:
+
+* `claimed`
+* `unclaimed`
+
+That is the complete state model.
+
+### Meaning
+
+#### `claimed`
+
+The coin currently has an assigned controlling public key. Whoever holds the corresponding private key has the exclusive right to spend the coin.
+
+#### `unclaimed`
+
+The coin currently has no active controller. No private key currently has spend authority over it.
+
+## Non-States
+
+The following are not states:
+
+* spent
+* expired
+* reclaimed
+* rewarded
+* minted
+
+These are events, rules, or transition causes.
+
+Examples:
+
+* a spend is a transition from one claimed controller to another
+* expiry is a rule that converts `claimed` to `unclaimed`
+* reclaim is a transition from `unclaimed` to `claimed`
+
+## Context
+
+A **context** is the monetary scope in which a supply exists.
+
+A context defines:
+
+* total fixed coin supply
+* coin identifier space
+* claim policy
+* inactivity expiry policy
+* spend-triggered reward policy
+* conflict resolution rules
+
+Different contexts may define different parameters, but the rules within one context must be uniform.
+
+## Coin Structure
+
+A coin conceptually contains at least:
+
+* `coinId`
+* `state`
+* `controllerPubKey` when `claimed`
+* `lastClaimedAt`
+* `lastSpentAt`
+
+### Notes
+
+* `coinId` uniquely identifies the coin inside the context
+* `controllerPubKey` exists only when the coin is `claimed`
+* `lastClaimedAt` and `lastSpentAt` are used for policy evaluation
+* exact encoding is implementation-defined
+
+## Supply
+
+Supply is fixed for a given context.
+
+No new coins are created after context genesis.
+
+The system only moves coins between `unclaimed` and `claimed`.
+
+## Genesis
+
+At genesis, coins may begin in either of these patterns:
+
+### Pattern A
+
+All coins begin as `unclaimed`.
+
+### Pattern B
+
+Some subset begins `claimed`, and the rest begin `unclaimed`.
+
+This specification assumes the preferred bootstrap model is:
+
+* a large reserve of initially `unclaimed` coins
+* optional initial allocations if desired by the context creator
+
+## Claiming
+
+A claim assigns an `unclaimed` coin to a public key, making it `claimed`.
+
+### Claim Input
+
+A claim includes at least:
+
+* target `coinId`
+* claimant `publicKey`
+* any required anti-abuse or rate-limit proof
+
+### Claim Result
+
+If valid, the network sets:
+
+* `state = claimed`
+* `controllerPubKey = claimant public key`
+* `lastClaimedAt = now`
+* `lastSpentAt = null` or `now`, depending on implementation preference
+
+## Bootstrap Claiming
+
+The system may begin with **freebie claiming**.
+
+This means:
+
+* unclaimed coins may be claimed directly
+* claim frequency is strongly rate-limited
+* claiming is a bootstrap distribution tool, not the long-term primary acquisition path
+
+The design goal is that free claiming becomes less strategically useful as spend volume grows.
+
+## Claim Rate Limiting
+
+Claiming should be heavily rate-limited.
+
+The exact mechanism is implementation-defined, but the intended result is:
+
+* one actor cannot efficiently drain the unclaimed pool
+* bootstrapping remains possible
+* direct claiming becomes increasingly marginal compared to earning coins through actual circulation
+
+## Payment Requests
+
+A payee generates one or more fresh key pairs and sends a payment request containing the public keys.
+
+A payment request contains at least:
+
+* requested amount
+* one destination public key per requested coin
+* optional request identifier
+* optional expiry time
+
+The payer then binds coins they control to the payee’s supplied public keys by spending their currently claimed coins.
+
+## Spend
+
+A spend transfers control of claimed coins to new public keys.
+
+A spend is not a state. It is a transition.
+
+### Spend Input
+
+A spend includes at least:
+
+* one or more input coin identifiers
+* one destination public key per output coin
+* signatures from the current controllers of all input coins
+
+### Spend Conditions
+
+A spend is valid only if:
+
+* every input coin exists
+* every input coin is currently `claimed`
+* every input coin is controlled by the signing key
+* each input coin has not been invalidated by a conflicting canonical spend
+* input count matches output count plus any intentional routing rules defined by the context
+
+## Spend Result
+
+For each valid transferred coin:
+
+* the previous control relation is removed
+* the coin remains `claimed`
+* the controlling public key becomes the new destination public key
+* `lastSpentAt = now`
+* `lastClaimedAt` remains historical or may be updated according to implementation preference
+
+In simpler terms, the coin stays `claimed`, but the claimant changes.
+
+## Inactivity Expiry
+
+A claimed coin does not remain claimed forever.
+
+If a coin remains claimed without being spent for more than one year, it becomes unclaimed.
+
+### Rule
+
+If:
+
+`now - lastSpentAt > 1 year`
+
+or, for never-spent claimed coins:
+
+`now - lastClaimedAt > 1 year`
+
+then the network may convert:
+
+* `claimed -> unclaimed`
+
+### Expiry Result
+
+When this happens:
+
+* the controlling public key is removed
+* the old holder loses spend authority
+* the coin becomes available to circulation again through system rules
+
+## Unclaimed Reserve
+
+All unclaimed coins together form the system’s reclaimable reserve.
+
+This includes:
+
+* never-claimed coins
+* coins that became unclaimed due to inactivity expiry
+
+The reserve is not a separate state or object type. It is just the current set of unclaimed coins.
+
+## Spend-Triggered Return From Reserve
+
+When a spend occurs, the network may allocate additional coins from the unclaimed reserve into circulation.
+
+This is the main circulation reinforcement mechanism.
+
+### Policy
+
+For a spend of amount `S`, the network may return up to a bounded amount from the unclaimed reserve.
+
+Example policy:
+
+* return up to `10%` of `S`
+* actual return depends on available unclaimed reserve
+* if insufficient reserve exists, return less
+* if no reserve exists, return zero
+
+### Formula
+
+A simple version is:
+
+`reward = min(unclaimedReserveAvailable, floor(S * 0.10))`
+
+## Reward Routing
+
+The context must define where returned reserve coins go during a spend.
+
+Possible policies include:
+
+* all to payee
+* all to payer
+* split between payer and payee
+* routed to specific transaction outputs
+
+The preferred model for clean circulation is:
+
+* returned coins are attached to spend outputs
+* they enter active circulation through actual payment flow
+
+## Why This Works
+
+This gives the system two circulation paths:
+
+### Path 1: Bootstrap
+
+Strongly rate-limited free claims from the unclaimed reserve.
+
+### Path 2: Mature Circulation
+
+Spending pulls additional coins from the unclaimed reserve back into active use.
+
+This means direct claiming can matter early, but over time active spending becomes the more meaningful driver of access to value.
+
+## Double Spend
+
+A claimed coin must have only one canonical control transition at a time.
+
+If two valid competing spends are observed for the same coin, the network must choose exactly one canonical result using a deterministic rule shared by all nodes.
+
+The exact deterministic rule is implementation-defined.
+
+The important property is:
+
+* same inputs
+* same observed competing spends
+* same canonical result
+
+## Participation
+
+Any domain may participate in the system.
+
+A domain does not define monetary authority by itself. A domain is only a participant, interface, or service point in the broader network.
+
+The monetary rules belong to the context, not to any one domain.
+
+## Security Model
+
+The system assumes:
+
+* control is defined by possession of the correct private key
+* private keys remain under sole control of the holder
+* spend authority follows the controlling public key recorded by the network
+* fresh keys are preferably used for receipt of payments
+
+## Economic Character
+
+This is not permanent-property money in the strongest sense.
+
+It is better described as renewable monetary control.
+
+A holder controls claimed coins, but if they do nothing with them for long enough, those coins return to the unclaimed reserve and may re-enter circulation through system rules.
+
+That gives the money these properties:
+
+* fixed supply
+* anti-permanent-hoarding pressure
+* circulation preference
+* bootstrap-friendly distribution
+* reclaimable inactivity slack
+
+## Recommended Initial Parameters
+
+These are suggested defaults, not protocol requirements.
+
+* coin unit: indivisible
+* coin meaning: one minimal denomination unit
+* total supply: context-defined fixed amount
+* inactivity expiry: 1 year
+* bootstrap claim path: enabled
+* claim rate limit: strong
+* spend-triggered reserve return: enabled
+* spend-triggered return cap: 10% of spend amount
+
+## Minimal Rule Summary
+
+1. Every coin is either `claimed` or `unclaimed`.
+2. A claimed coin has exactly one controlling public key.
+3. An unclaimed coin has no controller.
+4. Free claiming may assign unclaimed coins to new claimants, under strong rate limits.
+5. Spending transfers claimed coins from one controller to another.
+6. If a claimed coin is inactive for more than one year, it becomes unclaimed.
+7. When spending occurs, the network may return some unclaimed coins into circulation, capped as a function of spend size.
+8. Supply is fixed. Coins only move between claimed and unclaimed.
+
+## Concise Philosophy
+
+Money in this system is not an eternal account balance.
+
+It is a set of discrete capabilities over fixed-supply coins.
+
+A coin is either currently controlled by someone or currently controlled by no one.
+
+Circulation is not optional background behavior. It is part of how the system remains economically alive.
