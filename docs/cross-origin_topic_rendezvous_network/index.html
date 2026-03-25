@@ -1,0 +1,516 @@
+# Cross-Origin Topic Rendezvous Network (CTRN)
+
+## 1. Purpose
+
+This specification defines a cross-origin coordination network in which multiple browser origins expose WebSocket ingress endpoints, while backend proxy nodes cooperatively route topic traffic to a shared topic leader determined from a common membership view.
+
+The purpose of the network is to enable:
+
+- peer discovery across application and origin boundaries
+- message exchange across origins
+- room, topic, and resource coordination
+- resource or room state backup and replication
+- decentralized coordination over browser-compatible transport primitives
+
+This model treats browser origins as ingress points into a larger shared coordination fabric rather than as isolated communication silos.
+
+## 2. Design goals
+
+The network is designed to satisfy the following properties:
+
+1. Browser compatibility.
+   Clients must be able to join using standard browser networking capabilities, especially secure WebSocket connections.
+
+2. Cross-origin coordination.
+   Clients connected through different origins must be able to rendezvous on the same topic.
+
+3. Deterministic topic placement.
+   All proxies must derive the same topic owner from the same membership epoch.
+
+4. Scalable socket termination.
+   Many ingress proxies may terminate large numbers of client connections independently of topic ownership.
+
+5. Control-plane / data-plane separation.
+   Membership distribution must not be in the per-message critical path.
+
+6. Asynchronous resharding.
+   Membership changes must permit gradual ownership handoff without requiring synchronized data migration.
+
+7. Transport-level decentralization.
+   No single origin must be required as a universal broker for all traffic.
+
+## 3. Non-goals
+
+This specification does not require:
+
+- IP anycast
+- browser access to raw cluster membership storage
+- strict global linearizability for all state
+- direct browser-to-browser connectivity
+- elimination of origins or browser security boundaries
+
+## 4. Terminology
+
+**Origin**
+A browser origin identified by scheme, host, and port.
+
+**Ingress Origin**
+A browser-accessible origin exposing a WSS endpoint through which clients connect to the network.
+
+**Proxy Node**
+A server process terminating client WSS connections and routing topic traffic into the coordination network.
+
+**Membership View**
+A versioned snapshot describing the currently recognized proxy nodes and placement parameters.
+
+**Membership Epoch**
+A monotonically increasing version number associated with a Membership View.
+
+**Effective Time**
+The instant at which a Membership View becomes active for topic placement decisions.
+
+**Topic**
+An application-defined routing key used for rendezvous, messaging, discovery, or resource coordination.
+
+**Topic Leader**
+The proxy node currently authoritative for a given topic under a specific Membership Epoch.
+
+**Rendezvous**
+The property that all proxies route the same topic toward the same Topic Leader for a given epoch.
+
+**Grace Period**
+A bounded interval after an epoch transition during which previous leaders may forward or hand off traffic.
+
+## 5. System model
+
+The system consists of:
+
+- one or more browser-accessible ingress origins
+- many proxy nodes
+- a centralized control-plane membership store
+- a deterministic topic placement function
+- an inter-proxy forwarding mechanism
+
+Clients connect to any ingress origin.
+The ingress proxy accepts the connection and processes client messages.
+For each message or subscription operation referencing a topic, the proxy determines the current Topic Leader from its locally cached Membership View.
+If the local proxy is not the leader for that topic, it forwards the operation to the current Topic Leader.
+
+As a result, clients connected through different origins rendezvous on shared topic authorities without requiring the browser to bypass origin restrictions.
+
+## 6. Architecture
+
+### 6.1 Layers
+
+The architecture is composed of four logical layers.
+
+**Ingress Layer**
+Browser-compatible WSS endpoints exposed at one or more origins.
+
+**Routing Layer**
+Membership Epoch distribution, deterministic topic placement, local TTL caching, and inter-proxy forwarding.
+
+**Coordination Layer**
+Topic leadership, subscription registries, fanout, discovery, and per-topic authority.
+
+**State Layer**
+Optional message logs, room state, resource state, replication, backup, snapshots, or CRDT/event-based coordination.
+
+### 6.2 Control plane
+
+The control plane distributes Membership Views through a centralized authoritative store such as etcd.
+
+The control plane is responsible for:
+
+- publishing Membership Views
+- assigning Membership Epochs
+- defining Effective Times
+- distributing placement parameters
+- permitting safe reconfiguration
+
+The control plane is not consulted in the per-message path.
+
+### 6.3 Data plane
+
+The data plane carries:
+
+- client connections
+- subscriptions
+- published topic messages
+- discovery operations
+- forwarded inter-proxy traffic
+- handoff traffic during ownership changes
+
+## 7. Membership model
+
+### 7.1 Membership View structure
+
+A Membership View must contain at least:
+
+- `epoch`: a monotonically increasing integer
+- `effective_at`: a timestamp
+- `ttl`: a cache lifetime
+- `members`: a set of active proxy nodes
+- `placement_parameters`: parameters required by the topic placement algorithm
+
+Each member entry should include at least:
+
+- stable node identifier
+- inter-proxy routing address
+- ingress capability metadata if relevant
+- optional capacity or weight metadata
+
+Example:
+
+```json
+{
+  "epoch": 42,
+  "effective_at": "2026-03-25T18:00:00Z",
+  "ttl": 30,
+  "placement_parameters": {
+    "algorithm": "hrw",
+    "seed": "cluster-seed-v1"
+  },
+  "members": [
+    {
+      "node_id": "proxy-a",
+      "route_url": "wss://proxy-a.internal.example"
+    },
+    {
+      "node_id": "proxy-b",
+      "route_url": "wss://proxy-b.internal.example"
+    }
+  ]
+}
+```
+
+### 7.2 Activation semantics
+
+A proxy may fetch a Membership View before its Effective Time, but it must not use that view for authoritative placement until `effective_at` has been reached.
+
+This prevents placement divergence caused by uneven propagation delays.
+
+### 7.3 Caching
+
+Each proxy may TTL-cache the current Membership View locally.
+The cached view is valid until one of the following occurs:
+
+- its TTL expires
+- a newer epoch becomes active
+- the proxy receives a control-plane watch update
+- local policy requires refresh
+
+A stale but unexpired cache may continue to serve placement decisions so long as the proxy remains within the epoch’s validity policy.
+
+## 8. Topic placement
+
+### 8.1 Deterministic ownership requirement
+
+For a given:
+
+- topic identifier
+- Membership Epoch
+- placement seed and algorithm
+- member set
+
+all proxies must derive the same Topic Leader.
+
+### 8.2 Placement algorithm
+
+The default placement algorithm should be Highest Random Weight hashing, also known as Rendezvous Hashing.
+
+Conceptually:
+
+`leader = argmax(score(topic, member, seed))`
+
+This provides:
+
+- deterministic ownership
+- minimal reassignment during membership changes
+- no need for per-topic locking in the control plane
+
+### 8.3 Optional ranked owners
+
+A proxy may also derive ranked fallback owners:
+
+- primary owner
+- secondary owner
+- tertiary owner
+
+This enables faster failover and backup planning without recomputing arbitrary alternative placements.
+
+## 9. Client connection model
+
+### 9.1 Ingress
+
+A client connects to any available ingress origin via WSS.
+
+The selected ingress origin need not be the topic owner for any topic used by that client.
+
+### 9.2 Session attachment
+
+The ingress proxy owns the client transport session but does not necessarily own the topics referenced by that client.
+
+A client session may therefore be decomposed into:
+
+- transport termination at the ingress proxy
+- topic authority at one or more remote Topic Leaders
+
+### 9.3 Client simplicity
+
+Clients are not required to know:
+
+- cluster membership
+- current topic owners
+- inter-proxy topology
+- control-plane membership state
+
+Clients need only know one reachable ingress origin.
+
+## 10. Message routing
+
+### 10.1 Publish flow
+
+When a proxy receives a publish operation for topic `T`:
+
+1. it loads the active Membership Epoch
+2. it computes the Topic Leader for `T`
+3. if it is the leader, it processes the publish locally
+4. otherwise it forwards the publish to the Topic Leader
+
+### 10.2 Subscribe flow
+
+When a proxy receives a subscribe operation for topic `T`:
+
+1. it computes the Topic Leader for `T`
+2. if it is the leader, it registers the subscription
+3. otherwise it forwards the subscribe request to the leader
+4. the leader records that the subscriber is reachable via the ingress proxy that forwarded the request
+
+### 10.3 Fanout flow
+
+When the Topic Leader fans out a message:
+
+- it may deliver locally to directly attached subscribers
+- it may send one upstream copy per ingress proxy with downstream subscribers
+- the ingress proxy then delivers to locally attached client connections
+
+This permits efficient aggregation and avoids duplicating one inter-proxy copy per client.
+
+## 11. Topic leadership responsibilities
+
+A Topic Leader is authoritative for a topic under a specific epoch.
+
+Responsibilities may include:
+
+- subscription registry
+- publish ordering policy for that topic
+- presence tracking
+- peer discovery coordination
+- room coordination
+- routing metadata
+- optional message buffering or persistence
+- optional state snapshot coordination
+
+Not all persistent state must reside on the Topic Leader.
+The leader may coordinate state stored elsewhere.
+
+## 12. Epoch transitions and handoff
+
+### 12.1 Ownership transition
+
+When a new Membership Epoch becomes active, some topics may map to different leaders.
+
+Ownership changes are derived, not negotiated ad hoc.
+
+### 12.2 Graceful handoff
+
+When a topic changes owner:
+
+1. the new epoch becomes active at `effective_at`
+2. the new Topic Leader becomes authoritative
+3. the previous leader enters a Grace Period
+4. during the Grace Period, the previous leader may:
+   - forward traffic to the new leader
+   - transfer subscription state
+   - transfer buffered messages
+   - complete in-flight operations where policy allows
+
+5. after the Grace Period, the previous leader must stop acting as authoritative
+
+### 12.3 Epoch tagging
+
+Inter-proxy operations should carry the Membership Epoch under which routing was computed.
+
+This allows receiving proxies to distinguish:
+
+- currently valid placement
+- stale placement from a previous epoch
+- invalid routing based on unknown future state
+
+### 12.4 Missed epoch handling
+
+If a proxy has missed one or more epochs, it must refresh membership before acting authoritatively on any newly received routed traffic whose epoch it does not recognize.
+
+## 13. Failure model
+
+### 13.1 Proxy failure
+
+If a proxy fails, a later Membership Epoch removes it from the member set.
+Topic ownership then reassigns deterministically.
+
+### 13.2 Control-plane latency
+
+Control-plane propagation delay is tolerated because Membership Views activate at explicit Effective Times rather than immediately upon fetch.
+
+### 13.3 Split-brain prevention
+
+The system reduces split-brain risk by requiring:
+
+- monotonically increasing Membership Epochs
+- explicit Effective Times
+- deterministic ownership computation
+- epoch-tagged forwarding
+- bounded Grace Periods
+
+### 13.4 Remaining temporary inconsistency
+
+Temporary divergence may still occur due to:
+
+- clock skew
+- stale caches
+- delayed control-plane propagation
+- in-flight traffic during epoch transitions
+
+Implementations must therefore define:
+
+- acceptable clock skew bounds
+- Grace Period duration
+- stale-cache fallback behavior
+- reconciliation behavior after control-plane resynchronization
+
+## 14. State coordination
+
+### 14.1 Coordination state versus durable state
+
+This specification distinguishes between:
+
+**Coordination state**
+Routing, subscriptions, presence, rendezvous metadata, and topic-local authority data.
+
+**Durable state**
+Room snapshots, resource state, event logs, backups, or replicated application state.
+
+The Topic Leader may coordinate durable state without directly storing it.
+
+### 14.2 State strategies
+
+Valid state models include:
+
+- append-only event logs
+- snapshot + delta
+- CRDTs
+- replicated key-value records
+- actor/resource-owned logs
+- periodic backups to remote nodes
+
+The choice of state model is application-dependent and out of scope for this transport/routing specification.
+
+## 15. Cross-origin semantics
+
+### 15.1 Browser boundary preservation
+
+The browser origin model remains intact.
+Clients connect only to origins they are permitted to access.
+
+### 15.2 Network-wide rendezvous across origins
+
+Cross-origin coordination emerges because backend proxies route topic traffic into a shared topic placement space.
+
+Therefore:
+
+- clients on different origins may join the same topic
+- clients on different applications may discover each other
+- resources may be coordinated across application boundaries
+- origin boundaries no longer define the limits of communication topology
+
+### 15.3 Origin as ingress, not silo
+
+In this model, an origin is an ingress attachment point, not an isolated universe of coordination.
+
+## 16. Security considerations
+
+Implementations must consider at least:
+
+- proxy authentication inside the inter-proxy network
+- membership authenticity and integrity
+- replay resistance for inter-proxy control messages
+- topic-level authorization
+- client authentication
+- abuse prevention and rate limiting
+- origin admission policy
+- malicious or compromised proxy participation
+- traffic amplification via fanout abuse
+- stale routing exploitation during epoch transitions
+
+A proxy must not trust unauthenticated inter-proxy forwarding traffic merely because it appears to originate from another nominal cluster member.
+
+## 17. Scalability considerations
+
+### 17.1 Socket scaling
+
+Large numbers of client sockets are handled at ingress proxies.
+Topic Leaders coordinate topics, but need not terminate all client sockets directly.
+
+### 17.2 Hot topics
+
+A single topic may become a hotspot.
+Implementations may address this through:
+
+- topic partitioning
+- subtopic sharding
+- hierarchical rooms
+- weighted placement
+- explicit overflow policies
+
+### 17.3 Membership churn
+
+Frequent membership churn increases routing instability and handoff cost.
+Membership updates should therefore be rate-limited and intentionally scheduled where practical.
+
+## 18. Example flow
+
+### 18.1 Shared topic across origins
+
+- Client A connects to `wss://app-a.example/ws`
+- Client B connects to `wss://app-b.example/ws`
+- both subscribe to topic `room:123`
+- their ingress proxies compute the same Topic Leader for `room:123` under epoch 42
+- both proxies forward subscriptions to that leader
+- publishes from either client route to the same leader
+- the leader fans out to both ingress proxies
+- each ingress proxy delivers to its attached client
+
+The clients rendezvous on the same topic despite using different origins.
+
+## 19. Minimal conformance requirements
+
+A conforming implementation must:
+
+1. expose one or more browser-compatible ingress endpoints
+2. maintain a locally cached Membership View
+3. respect Membership Epoch and Effective Time semantics
+4. compute topic ownership deterministically
+5. route non-local topics to the correct Topic Leader
+6. support epoch-aware handoff behavior
+7. preserve topic rendezvous across origins
+
+## 20. Summary
+
+This specification defines a browser-compatible coordination fabric in which many origins expose WSS ingress points, while backend proxies deterministically route topic traffic to shared topic authorities derived from a versioned membership view.
+
+The key architectural principle is:
+
+**origins provide ingress; proxies provide rendezvous; membership epochs provide shared placement truth.**
+
+If you want, I can turn this into a more formal RFC-style draft next, with normative language like MUST, SHOULD, and MAY throughout.
