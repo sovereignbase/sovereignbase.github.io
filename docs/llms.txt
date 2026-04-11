@@ -1,0 +1,10 @@
+# Sovereignbase
+
+> Sovereignbase specifications and documentation.
+
+This file lists key pages that help language models understand the site structure and important documents.
+
+## Pages
+
+- [Home](https://sovereignbase.dev/): Main site entry page.
+- [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-list/): Convergent Replicated List specification.
