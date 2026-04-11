@@ -1,12 +1,1525 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Sovereignbase | Build user-sovereign applications.</title>
-<meta name="robots" content="noindex, nofollow" />
-<link rel="icon" type="image/png" href="/sovereignbase_logo.png">
-</head>
-<body>
-  <a href="/cross-origin_topic_rendezvous_network">cross-origin_topic_rendezvous_network</a>
-  <a href="/capability-based-currency">capability-based-currency</a>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sovereignbase is an end-to-end encrypted realtime backend for frontend teams with local-first sync, eventual consistency, and predefined schemas."
+    />
+    <meta
+      name="keywords"
+      content="Sovereignbase, encrypted realtime backend, local-first sync, eventual consistency, predefined schemas, end-to-end encrypted database, frontend backend"
+    />
+    <meta name="author" content="Jori Lehtinen" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="application-name" content="Sovereignbase" />
+    <meta name="theme-color" content="#020305" />
+    <link rel="canonical" href="https://sovereignbase.dev/" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://sovereignbase.dev/sovereignbase_logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://sovereignbase.dev/sovereignbase_logo.png"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Sovereignbase" />
+    <meta property="og:title" content="Sovereignbase" />
+    <meta
+      property="og:description"
+      content="End-to-end encrypted realtime backend for frontend teams with local-first sync, eventual consistency, and predefined schemas."
+    />
+    <meta property="og:url" content="https://sovereignbase.dev/" />
+    <meta
+      property="og:image"
+      content="https://sovereignbase.dev/sovereignbase_social_sharing_image.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Sovereignbase logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sovereignbase" />
+    <meta
+      name="twitter:description"
+      content="End-to-end encrypted realtime backend for frontend teams with local-first sync, eventual consistency, and predefined schemas."
+    />
+    <meta
+      name="twitter:image"
+      content="https://sovereignbase.dev/sovereignbase_social_sharing_image.png"
+    />
+    <meta name="twitter:image:alt" content="Sovereignbase logo" />
+    <meta name="twitter:creator" content="@jortsupetterson" />
+    <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sovereignbase</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://sovereignbase.dev/#organization",
+            "name": "Sovereignbase",
+            "url": "https://sovereignbase.dev/",
+            "alternateName": ["@sovereignbase"],
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://sovereignbase.dev/sovereignbase_logo.png"
+            },
+            "sameAs": [
+              "https://github.com/sovereignbase",
+              "https://jsr.io/@sovereignbase",
+              "https://www.npmjs.com/org/sovereignbase"
+            ]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://sovereignbase.dev/#author",
+            "name": "Jori Lehtinen",
+            "sameAs": [
+              "https://github.com/jortsupetterson",
+              "https://x.com/jortsupetterson"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sovereignbase.dev/#website",
+            "url": "https://sovereignbase.dev/",
+            "name": "Sovereignbase",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://sovereignbase.dev/#organization"
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://sovereignbase.dev/#software",
+            "name": "Sovereignbase",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "description": "End-to-end encrypted realtime backend for frontend teams with local-first sync, eventual consistency, and predefined schemas.",
+            "url": "https://sovereignbase.dev/",
+            "image": "https://sovereignbase.dev/sovereignbase_social_sharing_image.png",
+            "author": {
+              "@id": "https://sovereignbase.dev/#author"
+            },
+            "publisher": {
+              "@id": "https://sovereignbase.dev/#organization"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://sovereignbase.dev/#webpage",
+            "url": "https://sovereignbase.dev/",
+            "name": "Sovereignbase",
+            "description": "End-to-end encrypted realtime backend for frontend teams with local-first sync, eventual consistency, and predefined schemas.",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@id": "https://sovereignbase.dev/#website"
+            },
+            "about": {
+              "@id": "https://sovereignbase.dev/#software"
+            }
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --page-padding: clamp(12px, 3vw, 32px);
+        --canvas-aspect-ratio: 2000 / 820;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        position: relative;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        padding-block: 0;
+        padding-inline: 0;
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(255, 255, 255, 0.08),
+            transparent 40%
+          ),
+          linear-gradient(180deg, #07090d 0%, #020305 100%);
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .page-header {
+        position: absolute;
+        top: clamp(14px, 2.4vw, 28px);
+        left: 50%;
+        z-index: 20;
+        width: min(1240px, calc(100vw - 24px));
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.09),
+            rgba(255, 255, 255, 0.03)
+          ),
+          rgba(5, 7, 10, 0.72);
+        box-shadow:
+          0 24px 70px rgba(0, 0, 0, 0.32),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(18px);
+      }
+
+      .header-brand,
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-name {
+        margin: 0;
+        color: #ffffff;
+        font-family:
+          "Inter Tight",
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: clamp(15px, 2.5vw, 30px);
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .header-actions {
+        gap: 12px;
+      }
+
+      .header-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.02);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.04),
+          0 10px 28px rgba(0, 0, 0, 0.18);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .header-link img {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 auto;
+        display: block;
+      }
+
+      .header-link-label {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-stage {
+        position: relative;
+        isolation: isolate;
+        display: block;
+        width: 100vw;
+        height: 90dvh;
+        margin-inline: auto;
+        overflow: hidden;
+        flex: 0 0 auto;
+      }
+
+      .hero-stage svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin-inline: auto;
+      }
+
+      .hero-footer {
+        position: relative;
+        z-index: 6;
+        display: grid;
+        gap: 2px;
+        text-align: center;
+        pointer-events: none;
+        width: 100%;
+        margin-top: clamp(6px, 0.8dvh, 10px);
+        padding-bottom: clamp(8px, 1.2dvh, 14px);
+        justify-items: center;
+      }
+
+      .hero-footer-title {
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: none;
+      }
+
+      .hero-footer-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.03em;
+      }
+
+      .edge-fade {
+        position: absolute;
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .edge-fade-top {
+        top: 0;
+        left: 0;
+        right: 0;
+        height: clamp(82px, 11vh, 120px);
+        background: linear-gradient(
+          180deg,
+          rgba(2, 3, 5, 0.74) 0%,
+          rgba(2, 3, 5, 0.36) 38%,
+          rgba(2, 3, 5, 0) 100%
+        );
+      }
+
+      .edge-fade-left {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: clamp(18px, 2vw, 32px);
+        background: linear-gradient(
+          90deg,
+          rgba(2, 3, 5, 0.34) 0%,
+          rgba(2, 3, 5, 0.14) 38%,
+          rgba(2, 3, 5, 0) 100%
+        );
+      }
+
+      .edge-fade-right {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: clamp(18px, 2vw, 32px);
+        background: linear-gradient(
+          270deg,
+          rgba(2, 3, 5, 0.34) 0%,
+          rgba(2, 3, 5, 0.14) 38%,
+          rgba(2, 3, 5, 0) 100%
+        );
+      }
+
+      .edge-fade-bottom {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: clamp(88px, 14vh, 150px);
+        background: linear-gradient(
+          0deg,
+          rgba(2, 3, 5, 0.98) 0%,
+          rgba(2, 3, 5, 0.82) 34%,
+          rgba(2, 3, 5, 0.36) 70%,
+          rgba(2, 3, 5, 0) 100%
+        );
+      }
+
+      @media (max-width: 860px) {
+        .page-header {
+          width: calc(100vw - 16px);
+          padding: 14px 12px;
+          gap: 12px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .hero-stage svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .header-brand,
+        .header-actions {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .brand-name {
+          font-size: clamp(28px, 9vw, 36px);
+          text-align: center;
+        }
+
+        .header-actions {
+          margin-left: 0;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .header-link {
+          min-height: 40px;
+          padding: 0 14px;
+        }
+
+        .header-link-label {
+          font-size: 14px;
+        }
+
+        .hero-footer-title {
+          font-size: 10px;
+          letter-spacing: 0.1em;
+        }
+
+        .hero-footer-copy {
+          font-size: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header" aria-label="Page header">
+      <div class="header-brand">
+        <h1 class="brand-name">Sovereignbase</h1>
+      </div>
+      <div class="header-actions">
+        <a
+          class="header-link header-link--jsr"
+          href="https://jsr.io/@sovereignbase"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="JSR"
+        >
+          <img src="https://cdn.simpleicons.org/jsr/white" alt="" />
+          <span class="header-link-label">jsr</span>
+        </a>
+        <a
+          class="header-link header-link--npm"
+          href="https://www.npmjs.com/org/sovereignbase"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="npm"
+        >
+          <img src="https://cdn.simpleicons.org/npm/white" alt="" />
+          <span class="header-link-label">npm</span>
+        </a>
+        <a
+          class="header-link header-link--github"
+          href="https://github.com/sovereignbase"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub"
+        >
+          <img src="https://cdn.simpleicons.org/github/white" alt="" />
+          <span class="header-link-label">GitHub</span>
+        </a>
+      </div>
+    </header>
+    <div class="hero-stage" id="heroStage">
+      <svg
+        id="sceneSvg"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 2000 820"
+        preserveAspectRatio="xMidYMin slice"
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="tinyGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter
+            id="laptopShadow"
+            x="-30%"
+            y="-30%"
+            width="180%"
+            height="190%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="18"
+              stdDeviation="22"
+              flood-color="#000000"
+              flood-opacity="0.34"
+            />
+            <feDropShadow
+              dx="0"
+              dy="5"
+              stdDeviation="7"
+              flood-color="#ffffff"
+              flood-opacity="0.04"
+            />
+          </filter>
+          <filter
+            id="mobileShadow"
+            x="-40%"
+            y="-40%"
+            width="200%"
+            height="210%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="14"
+              stdDeviation="16"
+              flood-color="#000000"
+              flood-opacity="0.3"
+            />
+            <feDropShadow
+              dx="0"
+              dy="4"
+              stdDeviation="6"
+              flood-color="#ffffff"
+              flood-opacity="0.035"
+            />
+          </filter>
+          <filter
+            id="hubBackdropShadow"
+            x="-60%"
+            y="-60%"
+            width="220%"
+            height="240%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="24"
+              stdDeviation="28"
+              flood-color="#000000"
+              flood-opacity="0.28"
+            />
+          </filter>
+          <filter
+            id="hubMarkShadow"
+            x="-80%"
+            y="-80%"
+            width="260%"
+            height="260%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="12"
+              stdDeviation="16"
+              flood-color="#000000"
+              flood-opacity="0.24"
+            />
+          </filter>
+          <linearGradient id="screenFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0e1015" />
+            <stop offset="100%" stop-color="#06080b" />
+          </linearGradient>
+          <style>
+            :root {
+              color-scheme: dark;
+            }
+            svg {
+              background: #020305;
+              font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            }
+            .device-outline {
+              fill: rgba(18, 20, 26, 0.98);
+              stroke: rgba(255, 255, 255, 0.7);
+              stroke-width: 2;
+            }
+            .screen {
+              fill: url(#screenFade);
+              stroke: rgba(255, 255, 255, 0.42);
+              stroke-width: 1.5;
+            }
+            .text-ui {
+              fill: #f5f7fb;
+              font-size: 28px;
+              font-weight: 600;
+              letter-spacing: 0.01em;
+            }
+            .mobile-text {
+              font-size: 18px;
+            }
+            .muted-ui {
+              fill: rgba(255, 255, 255, 0.3);
+              font-size: 16px;
+            }
+            .input-box {
+              fill: rgba(255, 255, 255, 0.055);
+              stroke: rgba(255, 255, 255, 0.34);
+              stroke-width: 1.5;
+            }
+            .input-text {
+              fill: #ffffff;
+              font-size: 24px;
+              font-weight: 600;
+              dominant-baseline: middle;
+            }
+            .cursor {
+              fill: #ffffff;
+              animation: blink 1s steps(1, end) infinite;
+            }
+            .packet {
+              fill: #ffffff;
+              font-size: 28px;
+              font-weight: 700;
+              text-anchor: middle;
+              dominant-baseline: middle;
+              pointer-events: none;
+            }
+            .relay-ring {
+              fill: none;
+              stroke: rgba(255, 255, 255, 0.72);
+              stroke-width: 2;
+              opacity: 0;
+            }
+            .frame {
+              fill: none;
+              stroke: rgba(255, 255, 255, 0.2);
+              stroke-width: 1;
+            }
+            .action-button {
+              fill: rgba(255, 255, 255, 0.08);
+              stroke: rgba(255, 255, 255, 0.28);
+              stroke-width: 1.4;
+            }
+            .action-label {
+              fill: #ffffff;
+              font-size: 14px;
+              font-weight: 600;
+              text-anchor: middle;
+              dominant-baseline: middle;
+              letter-spacing: 0.03em;
+            }
+            @keyframes blink {
+              0%,
+              45% {
+                opacity: 1;
+              }
+              46%,
+              100% {
+                opacity: 0;
+              }
+            }
+          </style>
+          <mask id="packetVisibilityMask" maskUnits="userSpaceOnUse">
+            <rect id="packetMaskBg" width="2000" height="820" fill="#ffffff" />
+            <g id="packetMaskHub" transform="translate(1000 350)">
+              <g transform="translate(-297 -297) scale(0.58)">
+                <path
+                  fill="#000000"
+                  fill-rule="evenodd"
+                  d="M 513.00 854.50 L 508.00 853.50 L 443.00 815.50 L 204.50 673.00 L 204.50 289.00 L 510.00 138.50 L 513.00 138.50 L 544.00 153.50 L 818.50 289.00 L 818.50 673.00 L 513.00 854.50 Z M 513.50 791.00 L 769.50 643.00 L 769.50 318.00 L 511.00 191.50 L 252.50 319.00 L 252.50 643.00 L 498.00 784.50 L 511.00 791.50 L 513.50 791.00 Z M 496.00 614.50 L 468.00 601.50 L 293.50 510.00 L 293.50 338.00 L 513.00 228.50 L 733.00 337.50 L 733.50 404.00 L 514.00 294.50 L 358.00 374.50 L 357.50 477.00 L 451.00 525.50 L 489.00 544.50 L 493.00 544.50 L 528.00 525.50 L 529.50 524.00 L 530.00 461.50 L 601.50 499.00 L 601.50 556.00 L 496.00 614.50 Z M 513.00 746.50 L 293.50 625.00 L 294.00 556.50 L 511.00 671.50 L 662.50 584.00 L 662.50 486.00 L 514.00 407.50 L 470.50 431.00 L 470.00 493.50 L 406.50 462.00 L 406.50 398.00 L 513.00 341.50 L 730.50 453.00 L 730.50 620.00 L 641.00 673.50 L 513.00 746.50 Z"
+                />
+              </g>
+            </g>
+            <g id="packetMaskLaptop" transform="translate(380 388)">
+              <rect
+                x="0"
+                y="0"
+                rx="32"
+                ry="32"
+                width="660"
+                height="404"
+                fill="#000000"
+              />
+              <rect
+                x="-30"
+                y="410"
+                rx="20"
+                ry="20"
+                width="720"
+                height="42"
+                fill="#000000"
+              />
+            </g>
+            <g id="packetMaskMobile" transform="translate(1175 490)">
+              <rect
+                x="0"
+                y="0"
+                rx="44"
+                ry="44"
+                width="220"
+                height="356"
+                fill="#000000"
+              />
+            </g>
+          </mask>
+        </defs>
+
+        <rect id="sceneBg" width="2000" height="820" fill="#020305" />
+        <g
+          id="packets"
+          filter="url(#tinyGlow)"
+          mask="url(#packetVisibilityMask)"
+        ></g>
+
+        <g id="hubBackground" transform="translate(1000 350)">
+          <path
+            d="M -332 132 A 332 332 0 0 1 332 132 L 332 -248 L -332 -248 Z"
+            fill="rgba(255,255,255,0.014)"
+            filter="url(#hubBackdropShadow)"
+          />
+          <g
+            transform="translate(-297 -297) scale(0.58)"
+            filter="url(#hubMarkShadow)"
+          >
+            <path
+              fill="#ffffff"
+              fill-rule="evenodd"
+              d="M 513.00 854.50 L 508.00 853.50 L 443.00 815.50 L 204.50 673.00 L 204.50 289.00 L 510.00 138.50 L 513.00 138.50 L 544.00 153.50 L 818.50 289.00 L 818.50 673.00 L 513.00 854.50 Z M 513.50 791.00 L 769.50 643.00 L 769.50 318.00 L 511.00 191.50 L 252.50 319.00 L 252.50 643.00 L 498.00 784.50 L 511.00 791.50 L 513.50 791.00 Z M 496.00 614.50 L 468.00 601.50 L 293.50 510.00 L 293.50 338.00 L 513.00 228.50 L 733.00 337.50 L 733.50 404.00 L 514.00 294.50 L 358.00 374.50 L 357.50 477.00 L 451.00 525.50 L 489.00 544.50 L 493.00 544.50 L 528.00 525.50 L 529.50 524.00 L 530.00 461.50 L 601.50 499.00 L 601.50 556.00 L 496.00 614.50 Z M 513.00 746.50 L 293.50 625.00 L 294.00 556.50 L 511.00 671.50 L 662.50 584.00 L 662.50 486.00 L 514.00 407.50 L 470.50 431.00 L 470.00 493.50 L 406.50 462.00 L 406.50 398.00 L 513.00 341.50 L 730.50 453.00 L 730.50 620.00 L 641.00 673.50 L 513.00 746.50 Z"
+            />
+          </g>
+        </g>
+
+        <g
+          id="laptop"
+          transform="translate(380 388)"
+          filter="url(#laptopShadow)"
+        >
+          <g id="laptopLid">
+            <rect
+              x="0"
+              y="0"
+              rx="32"
+              ry="32"
+              width="660"
+              height="404"
+              class="device-outline"
+            />
+            <rect
+              x="28"
+              y="24"
+              rx="24"
+              ry="24"
+              width="604"
+              height="318"
+              class="screen"
+            />
+            <text x="64" y="82" class="muted-ui">title</text>
+            <text id="laptopTitle" x="64" y="142" class="text-ui" />
+            <path d="M 28 188 H 632" class="frame" />
+            <text x="64" y="236" class="muted-ui">input</text>
+            <rect
+              x="60"
+              y="250"
+              rx="16"
+              ry="16"
+              width="500"
+              height="56"
+              class="input-box"
+            />
+            <text id="laptopInput" x="92" y="279" class="input-text">
+              <tspan id="laptopInputValue"></tspan>
+            </text>
+            <rect
+              id="laptopCursor"
+              x="92"
+              y="262"
+              width="3"
+              height="28"
+              rx="1.5"
+              class="cursor"
+            />
+          </g>
+          <g id="laptopBase">
+            <rect
+              x="-30"
+              y="410"
+              rx="20"
+              ry="20"
+              width="720"
+              height="42"
+              fill="#32343a"
+            />
+            <rect
+              x="200"
+              y="422"
+              rx="10"
+              ry="10"
+              width="260"
+              height="12"
+              fill="rgba(255,255,255,0.34)"
+            />
+          </g>
+        </g>
+
+        <g
+          id="mobile"
+          transform="translate(1175 490)"
+          filter="url(#mobileShadow)"
+        >
+          <rect
+            x="0"
+            y="0"
+            rx="44"
+            ry="44"
+            width="220"
+            height="356"
+            class="device-outline"
+          />
+          <rect
+            x="20"
+            y="38"
+            rx="24"
+            ry="24"
+            width="180"
+            height="264"
+            class="screen"
+          />
+          <rect
+            x="78"
+            y="16"
+            rx="4"
+            ry="4"
+            width="64"
+            height="10"
+            fill="rgba(255,255,255,0.38)"
+          />
+          <circle
+            cx="110"
+            cy="328"
+            r="12"
+            fill="rgba(255,255,255,0.22)"
+            stroke="rgba(255,255,255,0.4)"
+          />
+          <text x="36" y="102" class="muted-ui">title</text>
+          <text id="mobileTitle" x="36" y="148" class="text-ui mobile-text" />
+          <path d="M 20 220 H 200" class="frame" />
+          <rect
+            x="36"
+            y="238"
+            rx="14"
+            ry="14"
+            width="148"
+            height="40"
+            class="action-button"
+          />
+          <text x="110" y="258" class="action-label">Update title</text>
+        </g>
+
+        <path id="packetPathLeft" fill="none" stroke="none" />
+        <path id="packetPathRight" fill="none" stroke="none" />
+
+        <script>
+          <![CDATA[
+              (function () {
+                const svgNS = 'http://www.w3.org/2000/svg';
+                const phrases = [
+                  'Sovereignbase',
+                  'Build user-sovereign applications',
+                  'End-to-end encrypted realtime backend',
+                  'Full data-privacy for your users',
+                  'Offline support with eventual consistency',
+                  'Realtime updates when online',
+                  'Predefined schemas for frontend teams',
+                  'User-sovereign data lifecycle'
+                ];
+                const weird = '*`¨⌬⟟⌁◇⊗✶¤☍Ж҂§≈∆◊⧉✦';
+                const sceneSvg = document.getElementById('sceneSvg');
+                const hubBackground = document.getElementById('hubBackground');
+                const laptop = document.getElementById('laptop');
+                const laptopLid = document.getElementById('laptopLid');
+                const laptopBase = document.getElementById('laptopBase');
+                const mobile = document.getElementById('mobile');
+                const sceneBg = document.getElementById('sceneBg');
+                const packetMaskBg = document.getElementById('packetMaskBg');
+                const packetMaskHub = document.getElementById('packetMaskHub');
+                const packetMaskLaptop = document.getElementById('packetMaskLaptop');
+                const packetMaskMobile = document.getElementById('packetMaskMobile');
+                const packetsLayer = document.getElementById('packets');
+                const packetPathLeft = document.getElementById('packetPathLeft');
+                const packetPathRight = document.getElementById('packetPathRight');
+                const laptopTitle = document.getElementById('laptopTitle');
+                const laptopInput = document.getElementById('laptopInput');
+                const laptopInputValue = document.getElementById('laptopInputValue');
+                const laptopCursor = document.getElementById('laptopCursor');
+                const mobileTitle = document.getElementById('mobileTitle');
+
+                 const sharedSceneLayout = {
+                   width: 2000,
+                   height: 820,
+                   viewBox: '0 0 2000 820',
+                   preserveAspectRatio: 'xMidYMin slice',
+                   hub: {
+                     x: 1000,
+                     y: 350,
+                     scaleX: 1.14,
+                     scaleY: 1.14,
+                     skewX: 0,
+                     opacity: 0.98
+                   },
+                   laptop: {
+                     x: 380,
+                     y: 388,
+                     scaleX: 0.88,
+                     scaleY: 0.88,
+                     skewX: -1.2,
+                     opacity: 1
+                   },
+                   mobile: {
+                     x: 1175,
+                     y: 490,
+                     scaleX: 0.92,
+                     scaleY: 0.92,
+                     skewX: 0.9,
+                     opacity: 1
+                   },
+                   mobileText: {
+                     x: 36,
+                     y: 148,
+                     maxWidth: 148,
+                     lineHeight: 22,
+                     maxLines: 4
+                   }
+                 };
+
+                const sceneNodes = {
+                   hub: {
+                     el: hubBackground,
+                     baseX: 1000,
+                     baseY: 350,
+                     anchorX: 0,
+                     anchorY: 0
+                   },
+                   laptop: {
+                     el: laptop,
+                     baseX: 380,
+                     baseY: 388,
+                     anchorX: 330,
+                     anchorY: 226
+                   },
+                   mobile: {
+                     el: mobile,
+                     baseX: 1175,
+                     baseY: 490,
+                     anchorX: 110,
+                     anchorY: 178
+                   }
+                 };
+
+                 const currentScene = {
+                   hub: { x: 1000, y: 350, scaleX: 1.14, scaleY: 1.14, skewX: 0, opacity: 0.98 },
+                   laptop: { x: 380, y: 388, scaleX: 0.88, scaleY: 0.88, skewX: -1.2, opacity: 1 },
+                   mobile: { x: 1175, y: 490, scaleX: 0.92, scaleY: 0.92, skewX: 0.9, opacity: 1 }
+                 };
+
+                 const laptopRelayLocal = { x: 280, y: 18 };
+                 const mobileRelayLocal = { x: 126, y: 18 };
+                 const hubIngressLocal = { x: -178, y: -36 };
+                 const hubEgressLocal = { x: 178, y: -28 };
+
+                 const state = {
+                   sourceInput: '',
+                   sourceTitle: '',
+                   targetTitle: '',
+                  phase: 'typing',
+                  phraseIndex: 0,
+                  index: 0,
+                  holdUntil: 0,
+                  packets: [],
+                  lastTick: 0,
+                   relayPulse: 0,
+                   entryStartedAt: null
+                 };
+
+                 const relayGeometry = {
+                   signature: '',
+                   leftLength: 0,
+                   rightLength: 0
+                 };
+
+                packetsLayer.textContent = '';
+
+                function randWeird() {
+                  return weird[Math.floor(Math.random() * weird.length)];
+                }
+
+                 function buildQuadraticPath(start, control, end) {
+                   return `M ${start.x} ${start.y} Q ${control.x} ${control.y} ${end.x} ${end.y}`;
+                 }
+
+                function pointOnPath(path, totalLength, t) {
+                  return path.getPointAtLength(totalLength * clamp01(t));
+                }
+
+                function clamp01(value) {
+                  return Math.max(0, Math.min(1, value));
+                }
+
+                function lerp(a, b, t) {
+                  return a + (b - a) * t;
+                }
+
+                function easeOutCubic(t) {
+                  return 1 - Math.pow(1 - t, 3);
+                }
+
+                function easeOutBack(t) {
+                  const c1 = 1.70158;
+                  const c3 = c1 + 1;
+                  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+                }
+
+                function getSceneLayout() {
+                   return sharedSceneLayout;
+                 }
+
+                function applyResponsiveSceneLayout() {
+                  const layout = getSceneLayout();
+                  sceneSvg.setAttribute('viewBox', layout.viewBox);
+                  sceneSvg.setAttribute(
+                    'preserveAspectRatio',
+                    layout.preserveAspectRatio
+                  );
+                  sceneBg.setAttribute('width', String(layout.width));
+                  sceneBg.setAttribute('height', String(layout.height));
+                  packetMaskBg.setAttribute('width', String(layout.width));
+                  packetMaskBg.setAttribute('height', String(layout.height));
+                }
+
+                function groupTransformString(node, pose) {
+                  return `translate(${pose.x} ${pose.y}) translate(${node.anchorX} ${node.anchorY}) skewX(${pose.skewX}) scale(${pose.scaleX} ${pose.scaleY}) translate(${-node.anchorX} ${-node.anchorY})`;
+                }
+
+                function setGroupTransform(name, pose) {
+                  const node = sceneNodes[name];
+                  node.el.setAttribute('transform', groupTransformString(node, pose));
+                  node.el.setAttribute('opacity', pose.opacity.toFixed(3));
+                  currentScene[name] = pose;
+                }
+
+                 function transformLocalPoint(name, point) {
+                   const pose = currentScene[name];
+                   const node = sceneNodes[name];
+                  let x = point.x - node.anchorX;
+                  let y = point.y - node.anchorY;
+                  x *= pose.scaleX;
+                  y *= pose.scaleY;
+                  x += Math.tan((pose.skewX * Math.PI) / 180) * y;
+                  x += node.anchorX + pose.x;
+                   y += node.anchorY + pose.y;
+                   return { x, y };
+                 }
+
+                 function updateRelayGeometry() {
+                   const leftStart = transformLocalPoint('laptop', laptopRelayLocal);
+                   const hubIngress = transformLocalPoint('hub', hubIngressLocal);
+                   const hubEgress = transformLocalPoint('hub', hubEgressLocal);
+                   const rightEnd = transformLocalPoint('mobile', mobileRelayLocal);
+                   const leftCtrl = {
+                     x: lerp(leftStart.x, hubIngress.x, 0.44),
+                     y: Math.min(leftStart.y, hubIngress.y) - 40
+                   };
+                   const rightCtrl = {
+                     x: lerp(hubEgress.x, rightEnd.x, 0.56),
+                     y: lerp(hubEgress.y, rightEnd.y, 0.36) - 8
+                   };
+                   const signature = [
+                     leftStart.x,
+                     leftStart.y,
+                     hubIngress.x,
+                     hubIngress.y,
+                     hubEgress.x,
+                     hubEgress.y,
+                     rightEnd.x,
+                     rightEnd.y
+                   ]
+                     .map((value) => value.toFixed(2))
+                     .join('|');
+
+                   if (relayGeometry.signature === signature) {
+                     return;
+                   }
+
+                   relayGeometry.signature = signature;
+                   packetPathLeft.setAttribute(
+                     'd',
+                     buildQuadraticPath(leftStart, leftCtrl, hubIngress)
+                   );
+                   packetPathRight.setAttribute(
+                     'd',
+                     buildQuadraticPath(hubEgress, rightCtrl, rightEnd)
+                   );
+                   relayGeometry.leftLength = packetPathLeft.getTotalLength();
+                   relayGeometry.rightLength = packetPathRight.getTotalLength();
+                 }
+
+                function updateSceneMotion(now) {
+                  if (state.entryStartedAt === null) {
+                    state.entryStartedAt = now;
+                  }
+
+                  const layout = getSceneLayout();
+                  const entry = easeOutBack(clamp01((now - state.entryStartedAt) / 1200));
+                  const settle = easeOutCubic(clamp01((now - state.entryStartedAt) / 950));
+                  const lidOpen = easeOutBack(
+                    clamp01((now - state.entryStartedAt - 110) / 950)
+                  );
+
+                  const targets = {
+                    hub: layout.hub,
+                    laptop: layout.laptop,
+                    mobile: layout.mobile
+                  };
+
+                  const starts = {
+                    hub: {
+                      x: targets.hub.x,
+                      y: targets.hub.y + 36,
+                      scaleX: 0.9,
+                      scaleY: 1.12,
+                      skewX: 0,
+                      opacity: 0
+                    },
+                    laptop: {
+                      x: targets.laptop.x - 34,
+                      y: targets.laptop.y + 56,
+                      scaleX: 0.92,
+                      scaleY: 1.08,
+                      skewX: -4.2,
+                      opacity: 0
+                    },
+                    mobile: {
+                      x: targets.mobile.x + 24,
+                      y: targets.mobile.y + 34,
+                      scaleX: 0.88,
+                      scaleY: 1.12,
+                      skewX: 4.8,
+                      opacity: 0
+                    }
+                  };
+
+                  ['hub', 'laptop', 'mobile'].forEach((name) => {
+                    const start = starts[name];
+                    const target = targets[name];
+                    setGroupTransform(name, {
+                      x: lerp(start.x, target.x, settle),
+                      y: lerp(start.y, target.y, settle),
+                      scaleX: lerp(start.scaleX, target.scaleX, entry),
+                      scaleY: lerp(start.scaleY, target.scaleY, entry),
+                      skewX: lerp(start.skewX, target.skewX, settle),
+                      opacity: lerp(start.opacity, target.opacity, settle)
+                    });
+                  });
+
+                  packetMaskHub.setAttribute(
+                    'transform',
+                    groupTransformString(sceneNodes.hub, currentScene.hub)
+                  );
+                  packetMaskLaptop.setAttribute(
+                    'transform',
+                    groupTransformString(sceneNodes.laptop, currentScene.laptop)
+                  );
+                  packetMaskMobile.setAttribute(
+                    'transform',
+                    groupTransformString(sceneNodes.mobile, currentScene.mobile)
+                  );
+
+                  laptopLid.setAttribute(
+                    'transform',
+                    `translate(330 404) skewX(${lerp(7.5, 0, lidOpen).toFixed(3)}) scale(1 ${lerp(0.06, 1, lidOpen).toFixed(3)}) translate(-330 -404)`
+                  );
+                  laptopLid.setAttribute(
+                    'opacity',
+                    String(lerp(0.18, 1, lidOpen).toFixed(3))
+                  );
+
+                   laptopBase.setAttribute(
+                     'transform',
+                     `translate(0 ${lerp(32, 0, settle).toFixed(3)}) translate(330 430) scale(${lerp(0.9, 1, settle).toFixed(3)} 1) translate(-330 -430)`
+                   );
+
+                   updateRelayGeometry();
+                 }
+
+                function emitPacket(kind, ch) {
+                  const text = document.createElementNS(svgNS, 'text');
+                  text.setAttribute('class', 'packet');
+                  text.setAttribute('x', '0');
+                  text.setAttribute('y', '0');
+                  text.textContent = ch;
+                  packetsLayer.appendChild(text);
+
+                  state.packets.push({
+                    el: text,
+                    kind,
+                    char: ch,
+                    glyph: randWeird(),
+                    seed: Math.random(),
+                    stage: 1,
+                    t: 0,
+                    speed: kind === 'add' ? 0.042 : 0.05
+                  });
+                }
+
+                function applyOp(kind, ch) {
+                  if (kind === 'add') {
+                    state.targetTitle += ch;
+                  } else {
+                    state.targetTitle = state.targetTitle.slice(0, -1);
+                  }
+                }
+
+                function pulseRelay() {
+                  state.relayPulse = 1;
+                }
+
+                function displayPacketText(packet) {
+                  const plainAtTarget = packet.kind === 'add' ? packet.char : '⌫';
+                  const flicker = Math.floor((packet.t + packet.seed) * 28) % 2 === 0;
+
+                  if (packet.stage === 1) {
+                    if (packet.t < 0.18) {
+                      return packet.char;
+                    }
+                    if (packet.t < 0.42) {
+                      return flicker ? packet.char : packet.glyph;
+                    }
+                    return packet.glyph;
+                  }
+
+                  if (packet.t < 0.56) {
+                    return packet.glyph;
+                  }
+                  if (packet.t < 0.82) {
+                    return flicker ? packet.glyph : plainAtTarget;
+                  }
+                  return plainAtTarget;
+                }
+
+                function packetScale(packet) {
+                  if (packet.stage === 1) {
+                    if (packet.t < 0.58) {
+                      return 1;
+                    }
+                    const sink = (packet.t - 0.58) / 0.42;
+                    return Math.max(0.04, 1 - Math.pow(sink, 0.84) * 0.96);
+                  }
+
+                  if (packet.t < 0.28) {
+                    return 0.04 + (packet.t / 0.28) * 0.76;
+                  }
+                  if (packet.t < 0.52) {
+                    return 0.8 + ((packet.t - 0.28) / 0.24) * 0.2;
+                  }
+                  return 1;
+                }
+
+                function packetOpacity(packet) {
+                  const base =
+                    packet.stage === 1
+                      ? 0.42 + 0.58 * (1 - Math.abs(0.5 - packet.t) * 2)
+                      : 0.34 + 0.66 * (1 - Math.abs(0.5 - packet.t) * 2);
+
+                  if (packet.stage === 1 && packet.t >= 0.58) {
+                    const sink = 1 - (packet.t - 0.58) / 0.42;
+                    return Math.max(0.02, base * sink * sink);
+                  }
+
+                  if (packet.stage === 2 && packet.t < 0.28) {
+                    const emerge = packet.t / 0.28;
+                    return Math.max(0.02, base * emerge * emerge);
+                  }
+
+                  return base;
+                }
+
+                function fitTextToWidth(el, maxWidth, baseSize, minSize) {
+                  let size = baseSize;
+                  el.style.fontSize = `${size}px`;
+
+                  if (typeof el.getComputedTextLength !== 'function') {
+                    return;
+                  }
+
+                  while (size > minSize && el.getComputedTextLength() > maxWidth) {
+                    size -= 1;
+                    el.style.fontSize = `${size}px`;
+                  }
+                }
+
+                function lineFits(el, x, y, value, maxWidth) {
+                  const probe = document.createElementNS(svgNS, 'tspan');
+                  probe.setAttribute('x', String(x));
+                  probe.setAttribute('y', String(y));
+                  probe.textContent = value;
+                  el.appendChild(probe);
+                  const fits =
+                    typeof probe.getComputedTextLength !== 'function' ||
+                    probe.getComputedTextLength() <= maxWidth;
+                  probe.remove();
+                  return fits;
+                }
+
+                function wrapTextToWidth(el, text, options) {
+                  const { x, y, maxWidth, lineHeight, maxLines } = options;
+                  el.textContent = '';
+                  el.style.fontSize = '18px';
+
+                  if (!text) {
+                    return;
+                  }
+
+                  const lines = [];
+                  let currentLine = '';
+
+                  for (const char of text) {
+                    const candidate = currentLine + char;
+                    if (!currentLine || lineFits(el, x, y, candidate, maxWidth)) {
+                      currentLine = candidate;
+                      continue;
+                    }
+
+                    const breakAt = currentLine.lastIndexOf(' ');
+                    if (breakAt > 0) {
+                      lines.push(currentLine.slice(0, breakAt));
+                      currentLine = `${currentLine.slice(breakAt + 1)}${char}`;
+                    } else {
+                      lines.push(currentLine);
+                      currentLine = char;
+                    }
+
+                    if (lines.length >= maxLines) {
+                      currentLine = '';
+                      break;
+                    }
+                  }
+
+                  if (currentLine && lines.length < maxLines) {
+                    lines.push(currentLine);
+                  }
+
+                  lines.slice(0, maxLines).forEach((line, index) => {
+                    const tspan = document.createElementNS(svgNS, 'tspan');
+                    tspan.setAttribute('x', String(x));
+                    tspan.setAttribute('y', String(y + index * lineHeight));
+                    tspan.textContent = line.trimEnd();
+                    el.appendChild(tspan);
+                  });
+                }
+
+                function updateInterface() {
+                  const layout = getSceneLayout();
+                  laptopInputValue.textContent = state.sourceInput;
+                  laptopTitle.textContent = state.sourceTitle;
+                  fitTextToWidth(laptopTitle, 520, 28, 16);
+                  fitTextToWidth(laptopInput, 452, 24, 14);
+                  wrapTextToWidth(mobileTitle, state.targetTitle, layout.mobileText);
+                  const valueWidth =
+                    typeof laptopInput.getComputedTextLength === 'function'
+                      ? laptopInput.getComputedTextLength()
+                      : 0;
+                  laptopCursor.setAttribute(
+                    'x',
+                    String(Math.min(540, 92 + valueWidth))
+                  );
+                }
+
+                function step(now) {
+                  const activePhrase = phrases[state.phraseIndex];
+                  const typingInterval = 140;
+                  const deletingInterval = 100;
+                  if (state.phase === 'typing' && now - state.lastTick > typingInterval) {
+                    if (state.index < activePhrase.length) {
+                      const ch = activePhrase[state.index++];
+                      state.sourceInput += ch;
+                      state.sourceTitle = state.sourceInput;
+                      emitPacket('add', ch);
+                      updateInterface();
+                      state.lastTick = now;
+                    } else {
+                      state.phase = 'hold';
+                      state.holdUntil = now + 950;
+                    }
+                  } else if (state.phase === 'hold' && now >= state.holdUntil) {
+                    state.phase = 'deleting';
+                    state.lastTick = now;
+                  } else if (state.phase === 'deleting' && now - state.lastTick > deletingInterval) {
+                    if (state.sourceInput.length > 0) {
+                      const ch = state.sourceInput.slice(-1);
+                      state.sourceInput = state.sourceInput.slice(0, -1);
+                      state.sourceTitle = state.sourceInput;
+                      emitPacket('del', ch);
+                      updateInterface();
+                      state.lastTick = now;
+                    } else if (state.packets.length === 0) {
+                      state.phase = 'pause';
+                      state.holdUntil = now + 260;
+                    }
+                  } else if (state.phase === 'pause' && now >= state.holdUntil) {
+                    state.phase = 'typing';
+                    state.phraseIndex = (state.phraseIndex + 1) % phrases.length;
+                    state.index = 0;
+                    state.lastTick = now;
+                  }
+                }
+
+                 function updatePackets() {
+                   const leftLength = relayGeometry.leftLength;
+                   const rightLength = relayGeometry.rightLength;
+
+                   if (!leftLength || !rightLength) {
+                     return;
+                   }
+
+                   const remaining = [];
+
+                  for (const packet of state.packets) {
+                    packet.t += packet.speed;
+
+                    if (packet.stage === 1) {
+                      const pos = pointOnPath(
+                        packetPathLeft,
+                        leftLength,
+                        Math.min(packet.t, 1)
+                      );
+                      packet.el.setAttribute(
+                        'transform',
+                        `translate(${pos.x} ${pos.y}) scale(${packetScale(packet).toFixed(3)})`
+                      );
+                      packet.el.textContent = displayPacketText(packet);
+                      packet.el.setAttribute(
+                        'opacity',
+                        packetOpacity(packet).toFixed(3)
+                      );
+                      if (packet.t >= 1) {
+                        packet.stage = 2;
+                        packet.t = 0;
+                        packet.glyph = randWeird();
+                        pulseRelay();
+                      }
+
+                      remaining.push(packet);
+                    } else {
+                      const pos = pointOnPath(
+                        packetPathRight,
+                        rightLength,
+                        Math.min(packet.t, 1)
+                      );
+                      packet.el.setAttribute(
+                        'transform',
+                        `translate(${pos.x} ${pos.y}) scale(${packetScale(packet).toFixed(3)})`
+                      );
+                      packet.el.textContent = displayPacketText(packet);
+                      packet.el.setAttribute(
+                        'opacity',
+                        packetOpacity(packet).toFixed(3)
+                      );
+                      if (packet.t >= 1) {
+                        applyOp(packet.kind, packet.char);
+                        updateInterface();
+                        packet.el.remove();
+                      } else {
+                        remaining.push(packet);
+                      }
+                    }
+                  }
+                  state.packets = remaining;
+                }
+
+                function updateRelayVisual() {
+                  state.relayPulse *= 0.91;
+                }
+
+                 function loop(now) {
+                   if (document.hidden) {
+                     requestAnimationFrame(loop);
+                     return;
+                   }
+
+                   updateSceneMotion(now);
+                   step(now);
+                   updatePackets();
+                  updateRelayVisual();
+                  requestAnimationFrame(loop);
+                }
+
+                applyResponsiveSceneLayout();
+                updateSceneMotion(0);
+                updateInterface();
+                requestAnimationFrame(loop);
+                window.addEventListener('resize', () => {
+                  applyResponsiveSceneLayout();
+                  updateInterface();
+                });
+              })();
+            ]]>
+        </script>
+      </svg>
+      <div class="edge-fade edge-fade-top" aria-hidden="true"></div>
+      <div class="edge-fade edge-fade-left" aria-hidden="true"></div>
+      <div class="edge-fade edge-fade-right" aria-hidden="true"></div>
+      <div class="edge-fade edge-fade-bottom" aria-hidden="true"></div>
+    </div>
+    <div class="hero-footer" aria-hidden="true">
+      <div class="hero-footer-title">Coming soon...</div>
+      <div class="hero-footer-copy">© Jori Lehtinen. All rights reserved.</div>
+    </div>
+  </body>
 </html>
