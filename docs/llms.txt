@@ -7,5 +7,6 @@ This file lists key pages that help language models understand the site structur
 ## Pages
 
 - [Home](https://sovereignbase.dev/): Main site entry page.
-- [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-struct/): Convergent Replicated Struct (CR-Struct) specification.
+- [Convergent Replicated Struct](https://sovereignbase.dev/convergent-replicated-struct/): Convergent Replicated Struct (CR-Struct) specification.
 - [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-list/): Convergent Replicated List (CR-List) specification.
+- [Convergent Replicated Map](https://sovereignbase.dev/convergent-replicated-map/): Convergent Replicated Map (CR-Map) specification.
