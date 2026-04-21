@@ -7,6 +7,7 @@ This file lists key pages that help language models understand the site structur
 ## Pages
 
 - [Home](https://sovereignbase.dev/): Main site entry page.
+- [QR](https://sovereignbase.dev/qr/): Tools to encode information (eg. recovery key) in to QRs. As well as scan and print QRs.
 - [Hardware bound package](https://sovereignbase.dev/hardware-bound/): Device bound entropy for zero-knowledge/local-first application cryptographic bootsrap.
 - [Convergent Replicated Struct](https://sovereignbase.dev/convergent-replicated-struct/): Convergent Replicated Struct (CR-Struct) specification.
 - [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-list/): Convergent Replicated List (CR-List) specification.
