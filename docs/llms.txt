@@ -9,6 +9,8 @@ This file lists key pages that help language models understand the site structur
 - [Home](https://sovereignbase.dev/): Main site entry page.
 - [QR](https://sovereignbase.dev/qr/): Tools to encode information (eg. recovery key) in to QRs. As well as scan and print QRs.
 - [Hardware bound package](https://sovereignbase.dev/hardware-bound/): Device bound entropy for zero-knowledge/local-first application cryptographic bootsrap.
+- [Dragonwatch module demo](https://sovereignbase.dev/dragonwatch/): Dragonwatch module in action.
+- [Dragonwatch module docs](https://sovereignbase.dev/dragonwatch/docs/): Typedoc for dragonwatch package.
 - [Peer to peer module demo](https://sovereignbase.dev/peer2peer/): Peer to peer module in action.
 - [Peer to peer module docs](https://sovereignbase.dev/peer2peer/docs/): Typedoc for peer2peer package.
 - [Peer to peer module spec](https://sovereignbase.dev/peer2peer/spec/): Peer to peer module specification (part of ANBS).
