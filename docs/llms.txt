@@ -15,6 +15,7 @@ This file lists key pages that help language models understand the site structur
 - [Peer to peer module docs](https://sovereignbase.dev/peer2peer/docs/): Typedoc for peer2peer package.
 - [Peer to peer module spec](https://sovereignbase.dev/peer2peer/spec/): Peer to peer module specification (part of ANBS).
 - [Convergent Replicated Struct](https://sovereignbase.dev/convergent-replicated-struct/): Convergent Replicated Struct (CR-Struct) specification.
+- [Convergent Replicated Struct Documentation](https://sovereignbase.dev/convergent-replicated-struct/docs/): Convergent Replicated Struct (CR-Struct) Typedoc documentation.
 - [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-list/): Convergent Replicated List (CR-List) specification.
 - [Convergent Replicated Text](https://sovereignbase.dev/convergent-replicated-text/): Convergent Replicated Text (CR-Text) browser demo.
 - [Convergent Replicated Text Documentation](https://sovereignbase.dev/convergent-replicated-text/docs/): Convergent Replicated Text (CR-Text) Typedoc documentation.
