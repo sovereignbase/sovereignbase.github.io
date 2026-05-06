@@ -34,6 +34,15 @@
    <loc>https://sovereignbase.dev/convergent-replicated-map/</loc>
   </url>
   <url>
+   <loc>https://sovereignbase.dev/convergent-replicated-set/</loc>
+  </url>
+  <url>
+   <loc>https://sovereignbase.dev/convergent-replicated-set/docs/</loc>
+  </url>
+  <url>
+   <loc>https://sovereignbase.dev/convergent-replicated-set/spec/</loc>
+  </url>
+  <url>
     <loc>https://sovereignbase.dev/convergent-replicated-list/</loc>
   </url>
   <url>
@@ -41,6 +50,9 @@
   </url>
   <url>
   <loc>https://sovereignbase.dev/convergent-replicated-text/docs/</loc>
+  </url>
+  <url>
+  <loc>https://sovereignbase.dev/convergent-replicated-text/spec/</loc>
   </url>
   <url>
    <loc>https://sovereignbase.dev/convergent-replicated-struct/</loc>
