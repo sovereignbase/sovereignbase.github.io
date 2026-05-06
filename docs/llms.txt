@@ -19,4 +19,8 @@ This file lists key pages that help language models understand the site structur
 - [Convergent Replicated List](https://sovereignbase.dev/convergent-replicated-list/): Convergent Replicated List (CR-List) specification.
 - [Convergent Replicated Text](https://sovereignbase.dev/convergent-replicated-text/): Convergent Replicated Text (CR-Text) browser demo.
 - [Convergent Replicated Text Documentation](https://sovereignbase.dev/convergent-replicated-text/docs/): Convergent Replicated Text (CR-Text) Typedoc documentation.
+- [Convergent Replicated Text Specification](https://sovereignbase.dev/convergent-replicated-text/spec/): Convergent Replicated Text (CR-Text) ReSpec specification.
 - [Convergent Replicated Map](https://sovereignbase.dev/convergent-replicated-map/): Convergent Replicated Map (CR-Map) specification.
+- [Convergent Replicated Set](https://sovereignbase.dev/convergent-replicated-set/): Convergent Replicated Set (CR-Set) browser demo.
+- [Convergent Replicated Set](https://sovereignbase.dev/convergent-replicated-set/docs/): Convergent Replicated Set (CR-Set) Typedoc documentation.
+- [Convergent Replicated Set](https://sovereignbase.dev/convergent-replicated-set/spec/): Convergent Replicated Set (CR-Set) ReSpec specification.
