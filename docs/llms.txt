@@ -13,6 +13,7 @@ This file lists key pages that help language models understand the site structur
 - [Dragonwatch module docs](https://sovereignbase.dev/dragonwatch/docs/): Typedoc for dragonwatch package.
 - [Peer to peer module demo](https://sovereignbase.dev/peer2peer/): Peer to peer module in action.
 - [Peer to peer module docs](https://sovereignbase.dev/peer2peer/docs/): Typedoc for peer2peer package.
+- [Schema CRDT module docs](https://sovereignbase.dev/schema-crdt/): Typedoc for schema-crdt package
 - [Peer to peer module spec](https://sovereignbase.dev/peer2peer/spec/): Peer to peer module specification (part of ANBS).
 - [Convergent Replicated Struct](https://sovereignbase.dev/convergent-replicated-struct/): Convergent Replicated Struct (CR-Struct) specification.
 - [Convergent Replicated Struct Documentation](https://sovereignbase.dev/convergent-replicated-struct/docs/): Convergent Replicated Struct (CR-Struct) Typedoc documentation.
