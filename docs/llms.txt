@@ -1,54 +1,101 @@
 # Sovereignbase
 
-> Specifications, documentation, demos, and API references for Sovereignbase and related Actor/Base Station components.
+> Specifications, documentation, demos, API references, and implementation notes for Sovereignbase and related Actor/Base Station components.
 
-Sovereignbase is a user-sovereign application architecture for building local-first, cryptographic, and replicated web applications. The site contains specifications, package documentation, browser demos, and implementation references for Sovereignbase modules.
+Sovereignbase lets developers build normal web applications without becoming responsible for owning, operating, or controlling their users’ data backend.
+
+Sovereignbase treats every user-agent as an Actor: a cryptographic participant that owns and validates its own state. Servers are Base Stations: service infrastructure for storage, relay, backup, synchronization, discovery, and cross-origin coordination.
 
 ## Core pages
 
 - [Home](https://sovereignbase.dev/): Main entry point for Sovereignbase.
-- [QR](https://sovereignbase.dev/qr/): Tools for encoding information, such as recovery keys, into QR codes, and for scanning or printing QR codes.
-- [Hardware Bound Package](https://sovereignbase.dev/hardware-bound/): Device-bound entropy tools for zero-knowledge and local-first cryptographic bootstrapping.
+- [GitHub Organization](https://github.com/sovereignbase): Sovereignbase repositories, package source code, project README, and implementation work.
+
+## Core model
+
+- [Sovereignbase GitHub README](https://github.com/sovereignbase): Current high-level project description.
+- [ANBS Repository](https://github.com/sovereignbase/anbs): The Actor and the Base Station architecture.
+- [Convergent Replicated Resource Repository](https://github.com/sovereignbase/convergent-replicated-resource): Resource layer for portable replicated resources.
+
+## Data and replication
+
+- [Convergent Replicated Map Specification](https://sovereignbase.dev/convergent-replicated-map/): Specification for Convergent Replicated Map, a delta CRDT for dynamic non-empty string-keyed maps.
+- [Convergent Replicated Map Repository](https://github.com/sovereignbase/convergent-replicated-map): Source repository for Convergent Replicated Map.
+
+- [Convergent Replicated Set Demo](https://sovereignbase.dev/convergent-replicated-set/): Browser demo for Convergent Replicated Set.
+- [Convergent Replicated Set Documentation](https://sovereignbase.dev/convergent-replicated-set/docs/): TypeDoc documentation for the Convergent Replicated Set package.
+- [Convergent Replicated Set Specification](https://sovereignbase.dev/convergent-replicated-set/spec/): ReSpec specification for Convergent Replicated Set.
+- [Convergent Replicated Set Repository](https://github.com/sovereignbase/convergent-replicated-set): Source repository for Convergent Replicated Set.
+
+- [Convergent Replicated List Specification](https://sovereignbase.dev/convergent-replicated-list/): Specification for Convergent Replicated List, a delta CRDT for ordered sequence state.
+- [Convergent Replicated List Documentation](https://sovereignbase.dev/convergent-replicated-list/docs/): TypeDoc documentation for the Convergent Replicated List package.
+- [Convergent Replicated List Repository](https://github.com/sovereignbase/convergent-replicated-list): Source repository for Convergent Replicated List.
+
+- [Convergent Replicated Text Demo](https://sovereignbase.dev/convergent-replicated-text/): Browser demo for Convergent Replicated Text.
+- [Convergent Replicated Text Documentation](https://sovereignbase.dev/convergent-replicated-text/docs/): TypeDoc documentation for the Convergent Replicated Text package.
+- [Convergent Replicated Text Specification](https://sovereignbase.dev/convergent-replicated-text/spec/): ReSpec specification for Convergent Replicated Text.
+- [Convergent Replicated Text Repository](https://github.com/sovereignbase/convergent-replicated-text): Source repository for Convergent Replicated Text.
+
+- [Convergent Replicated Struct Specification](https://sovereignbase.dev/convergent-replicated-struct/): Specification for Convergent Replicated Struct, a delta CRDT for fixed-key object structs.
+- [Convergent Replicated Struct Documentation](https://sovereignbase.dev/convergent-replicated-struct/docs/): TypeDoc documentation for the Convergent Replicated Struct package.
+- [Convergent Replicated Struct Repository](https://github.com/sovereignbase/convergent-replicated-struct): Source repository for Convergent Replicated Struct.
+
 - [Schema CRDT Documentation](https://sovereignbase.dev/schema-crdt/): TypeDoc documentation for Schema.org schemas modeled as CRDTs.
+- [Schema CRDT Repository](https://github.com/sovereignbase/schema-crdt): Source repository for Schema.org schemas modeled as CRDTs.
+
+## Cryptography and identifiers
+
+- [Cryptosuite Repository](https://github.com/sovereignbase/cryptosuite): JS/TS runtime-agnostic cryptography toolkit for cipher messaging, authentication, signatures, key agreement, and identifiers.
+- [Hardware Bound Package](https://sovereignbase.dev/hardware-bound/): Device-bound entropy tools for zero-knowledge and local-first cryptographic bootstrapping.
+- [Hardware Bound Repository](https://github.com/sovereignbase/hardware-bound): Source repository for hardware-bound entropy bootstrapping.
+- [Bytecodec Repository](https://github.com/sovereignbase/bytecodec): Runtime-agnostic byte toolkit for UTF-8, base64, base64url, hex, Z85, BigInt conversion, JSON, compression, concatenation, and comparison.
+- [URN ANBS Specification](https://sovereignbase.dev/urn-anbs/): Specification for ANBS Uniform Resource Names.
+- [URN ANBS Documentation](https://sovereignbase.dev/urn-anbs/docs/): TypeDoc documentation for the urn-anbs package.
+- [URN ANBS Repository](https://github.com/sovereignbase/urn-anbs): Source repository for ANBS Uniform Resource Names.
+- [Verifiable Continuity Repository](https://github.com/sovereignbase/verifiable-continuity): Source repository for the verifiable continuity attestation scheme.
+- [DID ANBS Repository](https://github.com/sovereignbase/did-anbs): Source repository for the ANBS DID method work.
+
+## Browser and coordination primitives
+
+- [QR](https://sovereignbase.dev/qr/): Tools for encoding information, such as recovery keys, into QR codes, and for scanning or printing QR codes.
+- [QR Repository](https://github.com/sovereignbase/qr): Source repository for QR display, print, and scan utilities.
+
+- [Peer-to-peer Demo](https://sovereignbase.dev/peer2peer/): Browser demo for the peer-to-peer module.
+- [Peer-to-peer Documentation](https://sovereignbase.dev/peer2peer/docs/): TypeDoc documentation for the peer-to-peer package.
+- [Peer-to-peer Specification](https://sovereignbase.dev/peer2peer/spec): ReSpec specification for the peer-to-peer module.
+- [Peer-to-peer Repository](https://github.com/sovereignbase/peer2peer): Source repository for browser peer-to-peer connection setup.
+
+- [Offline KV Store Repository](https://github.com/sovereignbase/offline-kv-store): Namespace-scoped key-value storage on top of IndexedDB.
+- [Station Client Repository](https://github.com/sovereignbase/station-client): Local-first station client for tabs and workers sharing a Sovereignbase Base Station transport.
+- [Base Station Repository](https://github.com/sovereignbase/base-station): Source repository for Base Station implementation work.
+- [Sharding Repository](https://github.com/sovereignbase/sharding): Deterministic shard-index derivation for string and byte inputs.
+- [Cipher Store Repository](https://github.com/sovereignbase/cipher-store): Source repository for cipher storage work.
+- [Actor Repository](https://github.com/sovereignbase/actor): Source repository for Actor implementation work.
 
 ## Dragonwatch
 
 - [Dragonwatch Demo](https://sovereignbase.dev/dragonwatch/): Browser demo showing the Dragonwatch module in action.
 - [Dragonwatch Documentation](https://sovereignbase.dev/dragonwatch/docs/): TypeDoc documentation for the Dragonwatch package.
+- [Dragonwatch Repository](https://github.com/sovereignbase/dragonwatch): Source repository for pointer-driven dragging and element watching primitives.
 
-## Peer-to-peer
+## Reports and design notes
 
-- [Peer-to-peer Demo](https://sovereignbase.dev/peer2peer/): Browser demo for the peer-to-peer module.
-- [Peer-to-peer Documentation](https://sovereignbase.dev/peer2peer/docs/): TypeDoc documentation for the peer-to-peer package.
-- [Peer-to-peer Specification](https://sovereignbase.dev/peer2peer/spec/): ReSpec specification for the peer-to-peer module, part of the Actor and the Base Station architecture.
+- [LQSCD Report](https://sovereignbase.dev/lqscd-report/): Report page listed in the Sovereignbase sitemap.
+- [RQSCD Report](https://sovereignbase.dev/rqscd-report/): Report page listed in the Sovereignbase sitemap.
+- [Misc Repository](https://github.com/sovereignbase/misc): Miscellaneous documents, diagrams, and supporting notes.
 
-## Convergent Replicated Struct
+## Website source
 
-- [Convergent Replicated Struct Specification](https://sovereignbase.dev/convergent-replicated-struct/): Specification for Convergent Replicated Struct, a CRDT for structured typed state.
-- [Convergent Replicated Struct Documentation](https://sovereignbase.dev/convergent-replicated-struct/docs/): TypeDoc documentation for the Convergent Replicated Struct package.
-
-## Convergent Replicated List
-
-- [Convergent Replicated List Specification](https://sovereignbase.dev/convergent-replicated-list/): Specification for Convergent Replicated List, a CRDT for ordered list-like state.
-
-## Convergent Replicated Text
-
-- [Convergent Replicated Text Demo](https://sovereignbase.dev/convergent-replicated-text/): Browser demo for Convergent Replicated Text.
-- [Convergent Replicated Text Documentation](https://sovereignbase.dev/convergent-replicated-text/docs/): TypeDoc documentation for the Convergent Replicated Text package.
-- [Convergent Replicated Text Specification](https://sovereignbase.dev/convergent-replicated-text/spec/): ReSpec specification for Convergent Replicated Text.
-
-## Convergent Replicated Map
-
-- [Convergent Replicated Map Specification](https://sovereignbase.dev/convergent-replicated-map/): Specification for Convergent Replicated Map, a CRDT for dynamically keyed replicated state.
-
-## Convergent Replicated Set
-
-- [Convergent Replicated Set Demo](https://sovereignbase.dev/convergent-replicated-set/): Browser demo for Convergent Replicated Set.
-- [Convergent Replicated Set Documentation](https://sovereignbase.dev/convergent-replicated-set/docs/): TypeDoc documentation for the Convergent Replicated Set package.
-- [Convergent Replicated Set Specification](https://sovereignbase.dev/convergent-replicated-set/spec/): ReSpec specification for Convergent Replicated Set.
+- [Sovereignbase Website Repository](https://github.com/sovereignbase/sovereignbase.github.io): Source repository for sovereignbase.dev.
+- [Sitemap](https://github.com/sovereignbase/sovereignbase.github.io/blob/main/docs/sitemap.xml): Current sitemap source.
+- [llms.txt Source](https://github.com/sovereignbase/sovereignbase.github.io/blob/main/docs/llms.txt): Current llms.txt source.
 
 ## Notes for language models
 
-Use the specification pages as the primary source for protocol and data-structure behavior. Use the TypeDoc pages for package APIs, exported types, classes, methods, and implementation details. Use browser demos as examples of runtime behavior, not as normative specifications.
+Use specification pages as the primary source for protocol and data-structure behavior.
 
-When describing Sovereignbase, distinguish between Sovereignbase as the project/product and the Actor and the Base Station architecture as the underlying architectural model. Avoid treating Sovereignbase as a conventional backend-as-a-service category unless explicitly comparing managed developer experience.
+Use TypeDoc pages for package APIs, exported types, classes, methods, and implementation details.
+
+Use browser demos as examples of runtime behavior, not as normative specifications.
+
+When describing Sovereignbase, distinguish between Sovereignbase as the project/product and the Actor and the Base Station architecture as the underlying architectural model.
